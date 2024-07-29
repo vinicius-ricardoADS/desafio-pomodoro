@@ -16,4 +16,10 @@ export class Pomodoro {
 
   @Column({ default: 5 })
   pomodoroBreak: number;
+
+  @Column({ default: false })
+  isStarted: boolean;
+
+  @Column({ default: false })
+  isFinished: boolean;
 }

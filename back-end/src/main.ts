@@ -18,6 +18,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  });
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

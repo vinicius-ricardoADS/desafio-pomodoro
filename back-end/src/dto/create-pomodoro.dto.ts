@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreatePomodoroDto {
   @IsNotEmpty({ message: 'A descrição não pode ser vazio' })
@@ -8,8 +8,14 @@ export class CreatePomodoroDto {
   numberOfPomodoros: string;
 
   @IsNumber()
-  pomodoroTime = 25;
+  pomodoroTime: number;
 
   @IsNumber()
-  pomodoroBreak = 5;
+  pomodoroBreak: number;
+
+  @IsBoolean()
+  isStarted?: boolean; // Opcional
+
+  @IsBoolean()
+  isFinished?: boolean; // Opcional
 }

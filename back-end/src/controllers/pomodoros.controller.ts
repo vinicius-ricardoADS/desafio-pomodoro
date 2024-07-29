@@ -66,6 +66,7 @@ export class PomodorosController {
   ): Promise<Pomodoro> {
     try {
       const pomodoroEntity = this.mapUpdateDtoToEntity(updatePomodoroDto);
+      console.log(id);
       const updateResult = await this.pomodorosService.update(
         id,
         pomodoroEntity,
@@ -103,19 +104,32 @@ export class PomodorosController {
     pomodoro.numberOfPomodoros = Number(dto.numberOfPomodoros);
     pomodoro.pomodoroTime = dto.pomodoroTime;
     pomodoro.pomodoroBreak = dto.pomodoroBreak;
+    pomodoro.isStarted = dto.isStarted;
+    pomodoro.isFinished = dto.isFinished;
     return pomodoro;
   }
 
   private mapUpdateDtoToEntity(dto: UpdatePomodoroDto): Pomodoro {
     const pomodoro = new Pomodoro();
-    pomodoro.description = dto.description;
-    pomodoro.numberOfPomodoros = Number(dto.numberOfPomodoros);
     if (dto.pomodoroTime !== undefined) {
       pomodoro.pomodoroTime = dto.pomodoroTime;
     }
     if (dto.pomodoroBreak !== undefined) {
       pomodoro.pomodoroBreak = dto.pomodoroBreak;
     }
+    if (dto.description !== undefined) {
+      pomodoro.description = dto.description;
+    }
+    if (dto.numberOfPomodoros !== undefined) {
+      pomodoro.numberOfPomodoros = Number(dto.numberOfPomodoros);
+    }
+    if (dto.isStarted !== undefined) {
+      pomodoro.isStarted = dto.isStarted;
+    }
+    if (dto.isFinished !== undefined) {
+      pomodoro.isFinished = dto.isFinished;
+    }
+    console.log(pomodoro);
     return pomodoro;
   }
 
@@ -124,6 +138,8 @@ export class PomodorosController {
       entity.id,
       entity.description,
       entity.numberOfPomodoros,
+      entity.isStarted,
+      entity.isFinished,
     );
   }
 }
