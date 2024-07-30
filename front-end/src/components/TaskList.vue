@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Task } from '../types/Task';
+import type { Task } from '../types/Task';
 import TaskForm from './TaskForm.vue';
 import TaskItem from './TaskItem.vue';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/api';
@@ -61,7 +61,7 @@ export default defineComponent({
     },
     async handleStartTask(task: Task) {
       try {
-        await updateTask(task.id, { isStarted: true });
+        await updateTask(task.id!, { isStarted: true });
         task.isStarted = true;
       } catch (error) {
         console.error('Failed to start task:', error);
@@ -69,18 +69,19 @@ export default defineComponent({
     },
     async handleFinishTask(task: Task) {
       try {
-        await updateTask(task.id, { isFinished: true });
+        await updateTask(task.id!, { isFinished: true });
         task.isFinished = true;
       } catch (error) {
         console.error('Failed to finish task:', error);
       }
     },
-    async handleTarefaFinalizada({ task, pomodoros, tempoGasto }) {
+    async handleTarefaFinalizada({ task, pomodoros, tempoGasto }: { task: Task; pomodoros: number; tempoGasto: number }) {
       console.log(`Pomodoros completados: ${pomodoros}`);
-      const minutes = Math.floor(tempoGasto / 60000);
-      const seconds = Math.floor((tempoGasto % 60000) / 1000);
+      const timer = pomodoros * tempoGasto;
+      const minutes = Math.floor(timer / 60000);
+      const seconds = Math.floor((timer % 60000) / 1000);
       this.tempoGasto = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      await updateTask(task.id, { isFinished: true });
+      await updateTask(task.id!, { isFinished: true });
       task.isFinished = true;
       
       // Aqui você pode adicionar lógica para atualizar o estado das tarefas ou armazenar os dados finalizados

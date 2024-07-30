@@ -6,13 +6,10 @@
     <button @click="startTask" :disabled="task.isStarted || task.isFinished">
       {{ task.isStarted ? 'Iniciada' : 'Iniciar' }}
     </button>
-    <button @click="finishTask" :disabled="!task.isStarted || task.isFinished">
-      {{ task.isFinished ? 'Finalizada' : 'Finalizar' }}
-    </button>
     <button @click="removeTask">Remover</button>
     <TaskTimer
       v-if="task.isStarted && !task.isFinished"
-      :numberOfPomodoros="task.numberOfPomodoros"
+      :numberOfPomodoros="task.numberOfPomodoros!"
       @finished="finishTask"
       @tarefaFinalizada="handleTarefaFinalizada"
     />
@@ -22,7 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TaskTimer from './TaskTimer.vue';
-import { Task } from '../types/Task';
+import type { Task } from '../types/Task';
 
 export default defineComponent({
   props: {

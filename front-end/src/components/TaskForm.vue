@@ -25,8 +25,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { Task } from '../types/Task';
+import { defineComponent } from 'vue';
+import type { PropType } from 'vue';
+import type { Task } from '../types/Task';
 
 export default defineComponent({
   props: {

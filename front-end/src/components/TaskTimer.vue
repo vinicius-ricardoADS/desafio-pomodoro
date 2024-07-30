@@ -5,14 +5,13 @@
     <p v-if="isBreakTime">{{ breakMessage }}</p>
     <p v-if="!isFinished">Tempo decorrido: {{ formattedElapsedTime }}</p>
     <button v-if="!isStarted && !isFinished && !isBreakTime" @click="startTimer">Iniciar Pomodoro</button>
-    <button v-if="isStarted && !isFinished && !isBreakTime" @click="pauseTimer">Pausar Pomodoro</button>
     <button v-if="!isStarted && !isFinished && elapsedTime > 0 && !isBreakTime" @click="resumeTimer">Retomar Pomodoro</button>
     <button v-if="isFinished || !isFinished" @click="finalizarTarefa">Finalizar</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onUnmounted, watch } from 'vue';
+import { defineComponent, ref, computed, onUnmounted } from 'vue';
 
 export default defineComponent({
   props: {
@@ -22,9 +21,9 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const pomodoroTime = 25 * 60 * 1000; // 25 minutos em milissegundos
-    const shortBreakTime = 5 * 60 * 1000; // 5 minutos em milissegundos
-    const longBreakTime = 15 * 60 * 1000; // 15 minutos em milissegundos
+    const pomodoroTime = 0.10 * 60 * 1000; // 25 minutos em milissegundos
+    const shortBreakTime = 0.10 * 60 * 1000; // 5 minutos em milissegundos
+    const longBreakTime = 0.10 * 60 * 1000; // 15 minutos em milissegundos
 
     const completedPomodoros = ref(0);
     const isStarted = ref(false);
