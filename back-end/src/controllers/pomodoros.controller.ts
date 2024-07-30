@@ -106,6 +106,7 @@ export class PomodorosController {
     pomodoro.pomodoroBreak = dto.pomodoroBreak;
     pomodoro.isStarted = dto.isStarted;
     pomodoro.isFinished = dto.isFinished;
+    pomodoro.timeSpent = dto.timeSpent;
     return pomodoro;
   }
 
@@ -129,6 +130,9 @@ export class PomodorosController {
     if (dto.isFinished !== undefined) {
       pomodoro.isFinished = dto.isFinished;
     }
+    if (dto.timeSpent !== undefined || dto.timeSpent === '') {
+      pomodoro.timeSpent = dto.timeSpent;
+    }
     console.log(pomodoro);
     return pomodoro;
   }
@@ -140,6 +144,7 @@ export class PomodorosController {
       entity.numberOfPomodoros,
       entity.isStarted,
       entity.isFinished,
+      entity.timeSpent,
     );
   }
 }

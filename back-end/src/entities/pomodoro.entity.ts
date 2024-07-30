@@ -22,4 +22,7 @@ export class Pomodoro {
 
   @Column({ default: false })
   isFinished: boolean;
+
+  @Column({ default: '' })
+  timeSpent: string;
 }

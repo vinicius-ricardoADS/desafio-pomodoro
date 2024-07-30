@@ -5,5 +5,6 @@ export class ListPomodoroDto {
     readonly numberOfPomodoros: number,
     readonly isStarted: boolean,
     readonly isFinished: boolean,
+    readonly timeSpent: string,
   ) {}
 }
