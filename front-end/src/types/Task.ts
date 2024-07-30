@@ -6,5 +6,6 @@ export interface Task {
     pomodoroBreak?: boolean | number;
     isStarted?: boolean;
     isFinished?: boolean;
+    timeSpent?: string;
 }
   

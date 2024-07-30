@@ -51,6 +51,7 @@ export default defineComponent({
         pomodoroBreak: this.numberOfPomodoros % 3 === 0 ? 15 : 5,
         isStarted: false,
         isFinished: false,
+        timeSpent: '',
       };
       this.$emit('submit', task);
       this.description = '';

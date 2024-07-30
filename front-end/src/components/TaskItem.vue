@@ -2,7 +2,7 @@
   <div class="task-item">
     <h3>{{ task.description }}</h3>
     <p>Pomodoros: {{ task.numberOfPomodoros }}</p>
-    <p>Tempo gasto: {{ tempoGasto }}</p>
+    <p v-if="task.timeSpent">Tempo gasto: {{ task.timeSpent }}</p>
     <button @click="startTask" :disabled="task.isStarted || task.isFinished">
       {{ task.isStarted ? 'Iniciada' : 'Iniciar' }}
     </button>
@@ -10,7 +10,6 @@
     <TaskTimer
       v-if="task.isStarted && !task.isFinished"
       :numberOfPomodoros="task.numberOfPomodoros!"
-      @finished="finishTask"
       @tarefaFinalizada="handleTarefaFinalizada"
     />
   </div>
@@ -38,9 +37,6 @@ export default defineComponent({
   methods: {
     startTask(): void {
       this.$emit('start-task', this.task);
-    },
-    finishTask(): void {
-      this.$emit('finish-task', this.task);
     },
     removeTask(): void {
       this.$emit('remove-task', this.task.id);

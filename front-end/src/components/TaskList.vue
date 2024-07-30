@@ -8,7 +8,6 @@
           :task="task"
           :tempoGasto="tempoGasto"
           @start-task="handleStartTask"
-          @finish-task="handleFinishTask"
           @remove-task="deleteTask"
           @tarefa-finalizada="handleTarefaFinalizada"
         />
@@ -67,21 +66,14 @@ export default defineComponent({
         console.error('Failed to start task:', error);
       }
     },
-    async handleFinishTask(task: Task) {
-      try {
-        await updateTask(task.id!, { isFinished: true });
-        task.isFinished = true;
-      } catch (error) {
-        console.error('Failed to finish task:', error);
-      }
-    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handleTarefaFinalizada({ task, pomodoros, tempoGasto }: { task: Task; pomodoros: number; tempoGasto: number }) {
-      console.log(`Pomodoros completados: ${pomodoros}`);
-      const timer = pomodoros * tempoGasto;
-      const minutes = Math.floor(timer / 60000);
-      const seconds = Math.floor((timer % 60000) / 1000);
+
+      const minutes = Math.floor(tempoGasto / 60000);
+      const seconds = Math.floor((tempoGasto % 60000) / 1000);
       this.tempoGasto = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      await updateTask(task.id!, { isFinished: true });
+      await updateTask(task.id!, { isFinished: true, timeSpent: this.tempoGasto });
+      this.tasks = await getTasks();
       task.isFinished = true;
       
       // Aqui você pode adicionar lógica para atualizar o estado das tarefas ou armazenar os dados finalizados

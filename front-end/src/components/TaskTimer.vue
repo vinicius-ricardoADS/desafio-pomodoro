@@ -43,8 +43,9 @@ export default defineComponent({
         elapsedTime.value = Date.now() - (startTime.value ?? 0);
 
         if (isBreakTime.value) {
-          const breakTime = (completedPomodoros.value % 3 === 0) ? longBreakTime : shortBreakTime;
+          const breakTime = (completedPomodoros.value % 4 === 0) ? longBreakTime : shortBreakTime;
           if (elapsedTime.value >= breakTime) {
+            elapsedTimeTotal.value += breakTime;
             isBreakTime.value = false;
             elapsedTime.value = 0;
             startTime.value = Date.now();
@@ -58,7 +59,7 @@ export default defineComponent({
         } else {
           if (elapsedTime.value >= pomodoroTime) {
             completedPomodoros.value += 1;
-            elapsedTimeTotal.value =+ elapsedTime.value;
+            elapsedTimeTotal.value += pomodoroTime;
             elapsedTime.value = 0;
             startTime.value = Date.now();
             isBreakTime.value = true;
@@ -85,8 +86,9 @@ export default defineComponent({
         elapsedTime.value = Date.now() - (startTime.value ?? 0);
 
         if (isBreakTime.value) {
-          const breakTime = (completedPomodoros.value % 3 === 0) ? longBreakTime : shortBreakTime;
+          const breakTime = (completedPomodoros.value % 4 === 0) ? longBreakTime : shortBreakTime;
           if (elapsedTime.value >= breakTime) {
+            elapsedTimeTotal.value += breakTime;
             isBreakTime.value = false;
             elapsedTime.value = 0;
             startTime.value = Date.now();
@@ -100,6 +102,7 @@ export default defineComponent({
         } else {
           if (elapsedTime.value >= pomodoroTime) {
             completedPomodoros.value += 1;
+            elapsedTimeTotal.value += pomodoroTime;
             elapsedTime.value = 0;
             startTime.value = Date.now();
             isBreakTime.value = true;
@@ -135,7 +138,7 @@ export default defineComponent({
     };
 
     const formattedTime = computed(() => {
-      const time = isBreakTime.value ? ((completedPomodoros.value % 3 === 0 ? longBreakTime : shortBreakTime) - elapsedTime.value) : pomodoroTime - elapsedTime.value;
+      const time = isBreakTime.value ? ((completedPomodoros.value % 4 === 0 ? longBreakTime : shortBreakTime) - elapsedTime.value) : pomodoroTime - elapsedTime.value;
       const minutes = Math.floor(time / 60000);
       const seconds = Math.floor((time % 60000) / 1000);
       return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
@@ -148,7 +151,7 @@ export default defineComponent({
     });
 
     const breakMessage = computed(() => {
-      return isBreakTime.value ? (completedPomodoros.value % 3 === 0 ? "Intervalo longo (15 min)" : "Intervalo curto (5 min)") : "";
+      return isBreakTime.value ? (completedPomodoros.value % 4 === 0 ? "Intervalo longo (15 min)" : "Intervalo curto (5 min)") : "";
     });
 
     onUnmounted(() => {
