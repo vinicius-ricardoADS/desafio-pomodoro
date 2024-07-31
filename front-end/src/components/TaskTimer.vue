@@ -1,17 +1,15 @@
 <template>
   <div class="task-timer">
     <p>Pomodoros usados: {{ completedPomodoros }}/{{ numberOfPomodoros }}</p>
-    <p v-if="!isFinished">Tempo restante: {{ formattedTime }}</p>
-    <p v-if="isBreakTime">{{ breakMessage }}</p>
-    <p v-if="!isFinished">Tempo decorrido: {{ formattedElapsedTime }}</p>
-    <button v-if="!isStarted && !isFinished && !isBreakTime" @click="startTimer">Iniciar Pomodoro</button>
-    <button v-if="!isStarted && !isFinished && elapsedTime > 0 && !isBreakTime" @click="resumeTimer">Retomar Pomodoro</button>
-    <button v-if="isFinished || !isFinished" @click="finalizarTarefa">Finalizar</button>
+    <p class="timer" v-if="!isFinished">{{ formattedTime }}</p>
+    <p class="break-time" v-if="isBreakTime">{{ breakMessage }}</p>
+    <button v-if="task?.isFinished  || !task?.isFinished" @click="finalizarTarefa">Finalizar</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onUnmounted } from 'vue';
+import type { Task } from '../types/Task';
 
 export default defineComponent({
   props: {
@@ -19,6 +17,10 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    task : {
+      type: Object as () => Task,
+      required: false,
+    }
   },
   setup(props, { emit }) {
     const pomodoroTime = 0.10 * 60 * 1000; // 25 minutos em milissegundos
@@ -34,9 +36,7 @@ export default defineComponent({
     const elapsedTimeTotal = ref(0);
     let timer: ReturnType<typeof setInterval> | null = null;
 
-    const startTimer = () => {
-      if (isStarted.value || isFinished.value) return;
-
+    if (props.task?.isStarted) {
       isStarted.value = true;
       startTime.value = Date.now() - elapsedTime.value;
       timer = setInterval(() => {
@@ -66,7 +66,7 @@ export default defineComponent({
           }
         }
       }, 1000);
-    };
+    }
 
     const pauseTimer = () => {
       if (!isStarted.value || isFinished.value) return;
@@ -123,11 +123,6 @@ export default defineComponent({
       completedPomodoros.value = 0;
     };
 
-    const restartTask = () => {
-      resetTimer();
-      startTimer();
-    };
-
     const finalizarTarefa = () => {
       if (timer) {
         clearInterval(timer);
@@ -165,11 +160,9 @@ export default defineComponent({
       isStarted,
       isFinished,
       isBreakTime,
-      startTimer,
       pauseTimer,
       resumeTimer,
       resetTimer,
-      restartTask,
       finalizarTarefa,
       formattedTime,
       formattedElapsedTime,
@@ -181,13 +174,35 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.break-time {
+  margin-bottom: 8px
+}
+p {
+  color: wheat;
+}
 .task-timer {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #6388ffb8;
+  margin-top: 20px;
+}
+.timer {
+  font-size: 4rem;
 }
 button {
   margin-right: 5px;
+  height: 31px;
+  width: 73px;
+  color: white;
+  border: 0;
+  border-radius: 0.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #485aff;
+}
+
+button:hover {
+  background-color: #3b3bfa;
+  cursor: pointer;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div>
-      <label for="description">Descrição</label>
+    <div class="field">
+      <label for="description" class="lb-input">Descrição</label>
       <input
         type="text"
         id="description"
@@ -10,8 +10,8 @@
         required
       />
     </div>
-    <div>
-      <label for="numberOfPomodoros">Número de Pomodoros</label>
+    <div class="field">
+      <label for="numberOfPomodoros" class="lb-input">Pomodoro</label>
       <input
         type="number"
         id="numberOfPomodoros"
@@ -39,7 +39,7 @@ export default defineComponent({
   data() {
     return {
       description: '',
-      numberOfPomodoros: 1,
+      numberOfPomodoros: 0,
     };
   },
   methods: {
@@ -55,7 +55,7 @@ export default defineComponent({
       };
       this.$emit('submit', task);
       this.description = '';
-      this.numberOfPomodoros = 1;
+      this.numberOfPomodoros = 0;
     },
   },
 });
@@ -65,26 +65,41 @@ export default defineComponent({
 form {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
-div {
-  margin-bottom: 10px;
+
+.lb-input {
+  padding-right: 15px;
+  color: wheat;
+} 
+
+.field {
+  margin-top: 20px;
 }
+
 label {
   font-weight: bold;
 }
+
 input {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  width: 250px;
 }
+
 button {
+  margin-top: 20px;
   padding: 5px;
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 3px;
+  border-radius: 1rem;
   cursor: pointer;
+  height: 32px;
+  width: 354px;
 }
+
 button:hover {
   background-color: #45a049;
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Pomodoro Task List</h1>
+    <h1 class="tittle">Pomodoro</h1>
     <TaskList />
   </div>
 </template>
@@ -18,11 +18,14 @@ export default defineComponent({
 
 <style scoped>
 #app {
-  text-align: center;
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
-  color: #2c3e50;
+.tittle {
+  text-align: center;
+  color: wheat;
+  margin: 0;
+  padding: 1rem;
 }
 </style>

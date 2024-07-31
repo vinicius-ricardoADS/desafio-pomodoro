@@ -2,7 +2,7 @@
   <div>
     <TaskForm :onSubmit="addTask" />
 
-    <ul>
+    <ul class="list-pomodoro">
       <li v-for="task in tasks" :key="task.id" class="task-item">
         <TaskItem
           :task="task"
@@ -83,13 +83,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.list-pomodoro {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
 .task-item {
-  border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
+  text-align: center;
+  margin: 20px;
   border-radius: 5px;
-}
-button {
-  margin-right: 5px;
 }
 </style>
