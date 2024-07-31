@@ -20,7 +20,7 @@
         required
       />
     </div>
-    <button type="submit">Adicionar Tarefa</button>
+    <button type="submit">{{ isEditing ? 'Salvar' : 'Adicionar Tarefa' }}</button>
   </form>
 </template>
 
@@ -35,12 +35,31 @@ export default defineComponent({
       type: Function as PropType<(task: Task) => void>,
       required: true,
     },
+    taskToEdit: {
+      type: Object as PropType<Task | null>,
+      default: null,
+    },
   },
   data() {
     return {
       description: '',
       numberOfPomodoros: 0,
+      isEditing: false,
     };
+  },
+  watch: {
+    taskToEdit: {
+      immediate: true,
+      handler(newTask) {
+        if (newTask) {
+          this.description = newTask.description;
+          this.numberOfPomodoros = newTask.numberOfPomodoros;
+          this.isEditing = true;
+        } else {
+          this.resetForm();
+        }
+      },
+    },
   },
   methods: {
     handleSubmit() {
@@ -53,9 +72,18 @@ export default defineComponent({
         isFinished: false,
         timeSpent: '',
       };
+
+      if (this.isEditing && this.taskToEdit) {
+        task.id = this.taskToEdit.id;
+      }
+
       this.$emit('submit', task);
+      this.resetForm();
+    },
+    resetForm() {
       this.description = '';
       this.numberOfPomodoros = 0;
+      this.isEditing = false;
     },
   },
 });

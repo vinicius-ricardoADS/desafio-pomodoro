@@ -26,11 +26,11 @@ export const createTask = async (task: Task): Promise<Task> => {
 };
 
 export const updateTask = async (
-  taskId: string,
-  updatedTask: Task
+  id: string,
+  task: Partial<Task>
 ): Promise<void> => {
   try {
-    await axios.patch(`${API_URL}/${taskId}`, updatedTask);
+    await axios.patch(`${API_URL}/${id}`, task);
   } catch (error) {
     console.error('Erro ao atualizar tarefa:', error);
     throw error;

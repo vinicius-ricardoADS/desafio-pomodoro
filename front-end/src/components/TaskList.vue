@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TaskForm :onSubmit="addTask" />
+    <TaskForm :onSubmit="handleFormSubmit" :taskToEdit="taskToEdit" />
 
     <ul class="list-pomodoro">
       <li v-for="task in tasks" :key="task.id" class="task-item">
@@ -10,6 +10,7 @@
           @start-task="handleStartTask"
           @remove-task="deleteTask"
           @tarefa-finalizada="handleTarefaFinalizada"
+          @edit-task="editTask"
         />
       </li>
     </ul>
@@ -32,6 +33,7 @@ export default defineComponent({
     return {
       tasks: [] as Task[],
       tempoGasto: '',
+      taskToEdit: null as Task | null,
     };
   },
   async created() {
@@ -42,12 +44,23 @@ export default defineComponent({
     }
   },
   methods: {
-    async addTask(task: Task) {
-      try {
-        const newTask = await createTask(task);
-        this.tasks.push(newTask);
-      } catch (error) {
-        console.error('Failed to create task:', error);
+    async handleFormSubmit(task: Task) {
+      const { id, ...taskData } = task;
+      if (id) {
+        try {
+          await updateTask(id, taskData);
+          this.tasks = this.tasks.map(t => (t.id === task.id ? task : t));
+          this.taskToEdit = null;
+        } catch (error) {
+          console.error('Failed to update task:', error);
+        }
+      } else {
+        try {
+          const newTask = await createTask(task);
+          this.tasks.push(newTask);
+        } catch (error) {
+          console.error('Failed to create task:', error);
+        }
       }
     },
     async deleteTask(id: string) {
@@ -68,15 +81,15 @@ export default defineComponent({
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async handleTarefaFinalizada({ task, pomodoros, tempoGasto }: { task: Task; pomodoros: number; tempoGasto: number }) {
-
       const minutes = Math.floor(tempoGasto / 60000);
       const seconds = Math.floor((tempoGasto % 60000) / 1000);
       this.tempoGasto = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       await updateTask(task.id!, { isFinished: true, timeSpent: this.tempoGasto });
       this.tasks = await getTasks();
       task.isFinished = true;
-      
-      // Aqui você pode adicionar lógica para atualizar o estado das tarefas ou armazenar os dados finalizados
+    },
+    editTask(task: Task) {
+      this.taskToEdit = task;
     },
   },
 });

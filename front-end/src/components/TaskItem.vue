@@ -8,7 +8,7 @@
         {{ task.isStarted ? 'Iniciada' : 'Iniciar' }}
       </button>
       <button class="bt-remove" @click="removeTask">Remover</button>
-      <button class="bt-edit">Editar</button>
+      <button class="bt-edit" @click="editTask">Editar</button>
     </div>
     <TaskTimer
       v-if="task.isStarted && !task.isFinished"
@@ -45,6 +45,9 @@ export default defineComponent({
     },
     removeTask(): void {
       this.$emit('remove-task', this.task.id);
+    },
+    editTask(): void {
+      this.$emit('edit-task', this.task);
     },
     handleTarefaFinalizada(payload: { pomodoros: number; tempoGasto: number }): void {
       this.$emit('tarefa-finalizada', { ...payload, task: this.task });

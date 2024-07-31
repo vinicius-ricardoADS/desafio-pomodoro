@@ -23,9 +23,9 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const pomodoroTime = 0.10 * 60 * 1000; // 25 minutos em milissegundos
-    const shortBreakTime = 0.10 * 60 * 1000; // 5 minutos em milissegundos
-    const longBreakTime = 0.10 * 60 * 1000; // 15 minutos em milissegundos
+    const pomodoroTime = 25 * 60 * 1000; // 25 minutos em milissegundos
+    const shortBreakTime = 5 * 60 * 1000; // 5 minutos em milissegundos
+    const longBreakTime = 15 * 60 * 1000; // 15 minutos em milissegundos
 
     const completedPomodoros = ref(0);
     const isStarted = ref(false);
