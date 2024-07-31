@@ -66,7 +66,6 @@ export class PomodorosController {
   ): Promise<Pomodoro> {
     try {
       const pomodoroEntity = this.mapUpdateDtoToEntity(updatePomodoroDto);
-      console.log(id);
       const updateResult = await this.pomodorosService.update(
         id,
         pomodoroEntity,
@@ -133,7 +132,6 @@ export class PomodorosController {
     if (dto.timeSpent !== undefined || dto.timeSpent === '') {
       pomodoro.timeSpent = dto.timeSpent;
     }
-    console.log(pomodoro);
     return pomodoro;
   }
 
