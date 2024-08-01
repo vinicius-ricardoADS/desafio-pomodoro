@@ -19,6 +19,7 @@ export default defineComponent({
 <style scoped>
 #app {
   display: flex;
+  align-items: center;
   flex-direction: column;
 }
 

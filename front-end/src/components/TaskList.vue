@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-container">
     <TaskForm :onSubmit="handleFormSubmit" :taskToEdit="taskToEdit" />
 
     <ul class="list-pomodoro">
@@ -108,5 +108,9 @@ export default defineComponent({
   text-align: center;
   margin: 20px;
   border-radius: 5px;
+}
+
+.main-container {
+  width: 60%;
 }
 </style>
