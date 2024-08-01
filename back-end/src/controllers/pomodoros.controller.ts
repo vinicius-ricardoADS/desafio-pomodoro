@@ -12,9 +12,9 @@ import {
 import { PomodorosService } from './pomodoros.service';
 import { CreatePomodoroDto } from '../dto/create-pomodoro.dto';
 import { UpdatePomodoroDto } from '../dto/update-pomodoro.dto';
-import { Pomodoro } from 'src/entities/pomodoro.entity';
+import { Pomodoro } from '../entities/pomodoro.entity';
 import { v4 as uuid } from 'uuid';
-import { ListPomodoroDto } from 'src/dto/list-pomodoro.dto';
+import { ListPomodoroDto } from '../dto/list-pomodoro.dto';
 
 @Controller('pomodoros')
 export class PomodorosController {
@@ -78,7 +78,12 @@ export class PomodorosController {
         throw new NotFoundException(`Pomodoro with id ${id} not found`);
       }
 
-      return await this.pomodorosService.findOne(id);
+      const pomodoroUpdatedEntity: Pomodoro = {
+        id,
+        ...pomodoroEntity,
+      };
+
+      return pomodoroUpdatedEntity;
     } catch (error) {
       console.error('Error updating pomodoro:', error.message);
       throw new InternalServerErrorException('Error updating pomodoro');
@@ -139,6 +144,8 @@ export class PomodorosController {
       isStarted: entity.isStarted,
       isFinished: entity.isFinished,
       timeSpent: entity.timeSpent,
+      pomodoroBreak: entity.pomodoroBreak,
+      pomodoroTime: entity.pomodoroTime,
     };
   }
 }

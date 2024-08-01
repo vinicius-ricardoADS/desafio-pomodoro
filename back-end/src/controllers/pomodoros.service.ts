@@ -3,7 +3,7 @@ import {
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Pomodoro } from 'src/entities/pomodoro.entity';
+import { Pomodoro } from '../entities/pomodoro.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
