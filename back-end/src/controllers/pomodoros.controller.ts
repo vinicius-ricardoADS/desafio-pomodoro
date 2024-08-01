@@ -20,31 +20,33 @@ import { ListPomodoroDto } from 'src/dto/list-pomodoro.dto';
 export class PomodorosController {
   constructor(private readonly pomodorosService: PomodorosService) {}
 
+  // Handler for creating a new pomodoro
   @Post()
   async create(
     @Body() createPomodoroDto: CreatePomodoroDto,
   ): Promise<Pomodoro> {
     try {
       const pomodoroEntity = this.mapCreateDtoToEntity(createPomodoroDto);
-      const pomodoro = await this.pomodorosService.create(pomodoroEntity);
-      return pomodoro;
+      return await this.pomodorosService.create(pomodoroEntity);
     } catch (error) {
       console.error('Error creating pomodoro:', error.message);
       throw new InternalServerErrorException('Error creating pomodoro');
     }
   }
 
+  // Handler for retrieving all pomodoros
   @Get()
   async findAll(): Promise<ListPomodoroDto[]> {
     try {
       const pomodoros = await this.pomodorosService.findAll();
-      return pomodoros.map((pomodoro) => this.mapEntityToListDto(pomodoro));
+      return pomodoros.map(this.mapEntityToListDto);
     } catch (error) {
       console.error('Error retrieving pomodoros:', error.message);
       throw new InternalServerErrorException('Error retrieving pomodoros');
     }
   }
 
+  // Handler for retrieving a single pomodoro by ID
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Pomodoro> {
     try {
@@ -59,6 +61,7 @@ export class PomodorosController {
     }
   }
 
+  // Handler for updating an existing pomodoro
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -75,14 +78,14 @@ export class PomodorosController {
         throw new NotFoundException(`Pomodoro with id ${id} not found`);
       }
 
-      const updatedPomodoro = await this.pomodorosService.findOne(id);
-      return updatedPomodoro;
+      return await this.pomodorosService.findOne(id);
     } catch (error) {
       console.error('Error updating pomodoro:', error.message);
       throw new InternalServerErrorException('Error updating pomodoro');
     }
   }
 
+  // Handler for deleting a pomodoro by ID
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     try {
@@ -96,53 +99,46 @@ export class PomodorosController {
     }
   }
 
+  // Maps the CreatePomodoroDto to a Pomodoro entity
   private mapCreateDtoToEntity(dto: CreatePomodoroDto): Pomodoro {
-    const pomodoro = new Pomodoro();
-    pomodoro.id = uuid();
-    pomodoro.description = dto.description;
-    pomodoro.numberOfPomodoros = Number(dto.numberOfPomodoros);
-    pomodoro.pomodoroTime = dto.pomodoroTime;
-    pomodoro.pomodoroBreak = dto.pomodoroBreak;
-    pomodoro.isStarted = dto.isStarted;
-    pomodoro.isFinished = dto.isFinished;
-    pomodoro.timeSpent = dto.timeSpent;
-    return pomodoro;
+    return {
+      id: uuid(),
+      description: dto.description,
+      numberOfPomodoros: Number(dto.numberOfPomodoros),
+      pomodoroTime: dto.pomodoroTime,
+      pomodoroBreak: dto.pomodoroBreak,
+      isStarted: dto.isStarted,
+      isFinished: dto.isFinished,
+      timeSpent: dto.timeSpent,
+    } as Pomodoro;
   }
 
+  // Maps the UpdatePomodoroDto to a Pomodoro entity
   private mapUpdateDtoToEntity(dto: UpdatePomodoroDto): Pomodoro {
     const pomodoro = new Pomodoro();
-    if (dto.pomodoroTime !== undefined) {
+    if (dto.pomodoroTime !== undefined)
       pomodoro.pomodoroTime = dto.pomodoroTime;
-    }
-    if (dto.pomodoroBreak !== undefined) {
+    if (dto.pomodoroBreak !== undefined)
       pomodoro.pomodoroBreak = dto.pomodoroBreak;
-    }
-    if (dto.description !== undefined) {
-      pomodoro.description = dto.description;
-    }
-    if (dto.numberOfPomodoros !== undefined) {
+    if (dto.description !== undefined) pomodoro.description = dto.description;
+    if (dto.numberOfPomodoros !== undefined)
       pomodoro.numberOfPomodoros = Number(dto.numberOfPomodoros);
-    }
-    if (dto.isStarted !== undefined) {
-      pomodoro.isStarted = dto.isStarted;
-    }
-    if (dto.isFinished !== undefined) {
-      pomodoro.isFinished = dto.isFinished;
-    }
-    if (dto.timeSpent !== undefined || dto.timeSpent === '') {
+    if (dto.isStarted !== undefined) pomodoro.isStarted = dto.isStarted;
+    if (dto.isFinished !== undefined) pomodoro.isFinished = dto.isFinished;
+    if (dto.timeSpent !== undefined || dto.timeSpent === '')
       pomodoro.timeSpent = dto.timeSpent;
-    }
     return pomodoro;
   }
 
+  // Maps a Pomodoro entity to a ListPomodoroDto
   private mapEntityToListDto(entity: Pomodoro): ListPomodoroDto {
-    return new ListPomodoroDto(
-      entity.id,
-      entity.description,
-      entity.numberOfPomodoros,
-      entity.isStarted,
-      entity.isFinished,
-      entity.timeSpent,
-    );
+    return {
+      id: entity.id,
+      description: entity.description,
+      numberOfPomodoros: entity.numberOfPomodoros,
+      isStarted: entity.isStarted,
+      isFinished: entity.isFinished,
+      timeSpent: entity.timeSpent,
+    };
   }
 }
