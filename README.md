@@ -20,10 +20,10 @@ Antes de executar o projeto é necessário seguir alguns passos importantes para
       ```npm install``` ou ```npm i```.
   4. Com a instalação das bibliotecas feita, será necessário construir um banco de dados **MySQL** com o nome **pomodoro** em sua máquina.
   5. Concluído a construção do banco de dados em sua máquina, o sistema do back-end precisará de algumas variáveis de ambiente para a execução completa do servidor. Dentro da raiz do diretório do **back-end** crie um arquivo .env com as seguintes variáveis de ambiente:
-    ```
-      DB_HOST=seu_host
-      DB_PORT=porta_mysql
-      DB_USERNAME=usuario
-      DB_PASSWORD=senha
-    ```
+```
+        DB_HOST=seu_host
+        DB_PORT=porta_mysql
+        DB_USERNAME=usuario
+        DB_PASSWORD=senha
+```
   6. Após as configurações acima, execute o comando ```npm run start``` dentro do diretório do **back-end** e, o seguindo comando ```npm run dev``` no diretório do **front-end**.
